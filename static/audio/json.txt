@@ -1,0 +1,49 @@
+var jsonObj = [ {
+	songName : "In A World Like This",
+	songTime : "03:41",
+	songSrc : "static/audio/aud11.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud11.png",
+	singer : "Backstreet Boys",
+}, {
+	songName : "All Of Me",
+	songTime : "04:26",
+	songSrc : "static/audio/aud10.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud10.png",
+	singer : "John Legend",
+}, {
+	songName : "See You Again",
+	songTime : "03:49",
+	songSrc : "static/audio/aud.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud.png",
+	singer : "Wiz Khalifa、Charlie Puth",
+}, {
+	songName : "If I Were A Boy",
+	songTime : "04:10",
+	songSrc : "static/audio/aud2.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud2.png",
+	singer : "Beyonce",
+}, {
+	songName : "Love The Way You Lie",
+	songTime : "04:56",
+	songSrc : "static/audio/aud3.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud3.png",
+	singer : "Eminem、Rihanna",
+}, {
+	songName : "可惜没如果",
+	songTime : "04:58",
+	songSrc : "static/audio/aud5.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud5.png",
+	singer : "林俊杰",
+}, {
+	songName : "向往",
+	songTime : "03:59",
+	songSrc : "static/audio/aud6.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud6.png",
+	singer : "李健",
+}, {
+	songName : "Girlfriend",
+	songTime : "03:37",
+	songSrc : "static/audio/aud7.mp3",
+	coverSrc : "static/img/audioplayer/cover/aud7.png",
+	singer : "Avril Lavigne",
+}, ];
