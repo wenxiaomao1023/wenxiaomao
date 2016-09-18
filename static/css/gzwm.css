@@ -1,0 +1,88 @@
+/* 关注我样式 */
+.gzw {
+	width: 380px;
+	height: 300px;
+	background-color: #fff;
+}
+
+.gzw-top {
+	width: 380px;
+	/*height: 250px;*/
+	/*float: right;*/
+}
+
+.maodesc{
+	width: 380px;
+	position: absolute;
+	z-index:100;
+	top:0px;
+	left:0px;
+}
+
+.gzw-top img {
+	width: 380px;
+}
+
+.gzw-bottom {
+	
+}
+
+.gzwm ul {
+	width: 100%;
+	/*margin: 10px 0px;*/
+	overflow: hidden
+}
+
+.gzwm li {
+	width: 52px;
+	margin: 5px 20px 5px 20px;
+	float: left;
+}
+
+.gzwm li a {
+	color: #747F8C;
+	width: 52px;
+	text-align: center;
+	padding-top: 60px;
+	float: left;
+}
+
+.gzwm .rss {
+	background: url(../img/ico_04_1.jpg) no-repeat scroll 0% 0%
+		transparent;
+}
+
+.gzwm .rss:hover {
+	color: #000;
+	background: url(../img/ico_04.png) no-repeat scroll 0% 0% transparent;
+}
+
+.gzwm .xlwb {
+	background: url(../img/ico_05_1.jpg) no-repeat scroll 0% 0%
+		transparent;
+}
+
+.gzwm .xlwb:hover {
+	color: #000;
+	background: url(../img/ico_05.png) no-repeat scroll 0% 0% transparent;
+}
+
+.gzwm .txwb {
+	background: url(../img/ico_06_1.jpg) no-repeat scroll 0% 0%
+		transparent;
+}
+
+.gzwm .txwb:hover {
+	color: #000;
+	background: url(../img/ico_06.png) no-repeat scroll 0% 0% transparent;
+}
+
+.gzwm .wx {
+	background: url(../img/ico_07_1.jpg) no-repeat scroll 0% 0%
+		transparent;
+}
+
+.gzwm .wx:hover {
+	color: #000;
+	background: url(../img/ico_07.png) no-repeat scroll 0% 0% transparent;
+}

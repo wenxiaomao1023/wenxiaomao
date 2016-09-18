@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block script %}
+<style>
+.gallery-container{
+	margin:0 auto;
+}
+
+/*修改gallery_cover width和margin的时候注意下面的公式
+$(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));*/
+.gallery_cover{
+	width:150px;
+	float:left;
+	margin:4px;
+	background-color:#fff;
+}
+.gallery_cover_img{
+}
+.gallery_cover_desc{
+}
+.gallery_cover_desc_name{
+	float:left;
+}
+.gallery_cover_desc_total{
+	float:right;
+}
+</style>
+<script>
+function getAlbum() {
+	$.ajax({
+		type : "GET",
+		async : true,
+		url : "/getAlbums",
+		data : {
+		},
+		dataType : "json",
+		success : function(data) {
+			var html="";
+			for(var i=0;i<data["rows"].length;i++){
+				html+='<div class="gallery_cover">'
+					+'<div class="gallery_cover_img"><a href="/gallery/'+data["rows"][i].id+'"><img src="'+data["rows"][i].cover+'"><a></div>'
+					+'<div class="gallery_cover_desc">'
+					+'<div class="gallery_cover_desc_name">'+data["rows"][i].name+'</div>'
+					+'<div class="gallery_cover_desc_total">( '+data["rows"][i].total+' )</div>'
+					+'</div>'
+					+'</div>';
+			}
+			$(".gallery-main")[0].innerHTML=html;
+		},
+		error : function(data) {
+			alert("getAlbum() error");
+		}
+	});
+}
+
+</script>
+{% endblock %}
+{% block content %}
+<div class="gallery-container">
+<div><a href="/gallery">相册</a></div>
+<div class="gallery-main"></div>
+</div>
+<script>
+window.onresize = function(){
+	$(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
+}
+$(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
+getAlbum();
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+.logo {
+	width: 260px;
+	height: 100%;
+}
+
+.logo-l-img {
+	width: 50px;
+	float: left;
+	margin:0 2px;
+	border:1px solid transparent;
+	border-radius:30px;
+}
+
+.logo-r-title {
+	float: left;
+	margin-left:5px;
+	/*-webkit-text-stroke: 0.5px #fff;*/
+}
+
+.logo-r-title-t {
+	font-size: 24px;
+	font-family: Microsoft YaHei;
+	color: #666;
+	/*color: #969696;*/
+}
+
+.logo-r-title-b {
+	margin-top:2px;
+	color: #666;
+}
+
+/* 头部信息 */
+.header {
+	margin: 0 auto;
+	padding:5px 0;
+	overflow: hidden;
+	clear: both;
+}
+
+#topnav li{
+	float:left;
+}
+#topnav a:hover {
+	background: #fff;
+	color: #000;
+}
+
+#topnav a {
+	color: #FFF
+}
+
+#topnav_current {
+	background: #F3FF41;
+} /* 高亮选中颜色 */
+a #topnav_current {
+	color: #000
+}
+
+/*换肤*/
+.setup-wallpaper-pop {
+	width: 306px;
+	height: 260px;
+	position: fixed;
+	z-index: -1;
+	background-color: #df8;
+	border-radius: 10px;
+	opacity: 0;
+	padding: 10px;
+	/* Firefox */ /* Safari 和 Chrome */ /* Opera */ /* IE 9 */
+	/*
+	-moz-transition: all 2s; 
+	-webkit-transition: all 2s; 
+	-o-transition: all 2s; 
+	-ms-transform: all 2s; 
+	transition: all 2s;
+	*/
+	-webkit-transform: scale(0);
+	-webkit-transition: -webkit-transform 0.3s
+		cubic-bezier(.4, .83, .32, 1.33);
+	-webkit-transform-origin: right top;
+}
+
+.setup-wallpaper-pop-show {
+	-webkit-transform: scale(1);
+	opacity: 1;
+}
+
+.setup-wallpaper-pop td {
+	width: 100px;
+	height: 80px;
+	background-color: #df8;
+	padding: 2px;
+}
+
+.setup-wallpaper-pop td:hover {
+	background-color: #0f8;
+}
+
+.setup-wallpaper-pop img {
+	width: 96px;
+	height: 76px;
+}

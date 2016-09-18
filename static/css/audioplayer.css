@@ -1,0 +1,121 @@
+/*.audioplayer-container {
+	width: 390px;
+	height: 345px;
+	background-color: #e7ebf2;	
+	padding-top: 5px;
+	margin-top: 10px;
+}*/
+.audioplayer-container {
+	width: 380px;
+	height: 345px;
+	padding-top: 5px;
+	margin-top: 15px;
+}
+
+.player-panel{
+	width: 380px;
+	height: 120px;
+	/*margin-left:5px;*/
+	background-color: #fff;
+}
+.player-panel-cover {
+	width:110px;
+	height:120px;
+	float:left;
+}
+.player-panel-img{
+	height:120px;
+}
+.player-panel-r{
+	width:260px;
+	height:100px;
+	float:right;
+}
+
+.player-panel-r-singer{
+	height:16px;
+	margin-top:15px;
+	padding-left:15px;
+	font-size: 8px;
+	font-family: Microsoft YaHei;
+	color: #969696;
+}
+
+.player-panel-r-songname{
+	height:20px;
+	padding-left:15px;
+	font-size: 16px;
+	font-family: Microsoft YaHei;
+	color: #717171;
+}
+
+.player-panel-r-songtime{
+	height:16px;
+	padding-left: 187px;
+	font-size: 8px;
+	font-family: Microsoft YaHei;
+	color: #969696;
+}
+
+.player-panel-r-progressbar{
+	width:262px;
+	height:7px;
+}
+.player-panel-r-control{
+	width:260px;
+	height:40px;
+	margin-top:6px;
+}
+.player-panel-r-control-start,
+.player-panel-r-control-pre,
+.player-panel-r-control-next,
+.player-panel-r-control-listloop,
+.player-panel-r-control-singleloop,
+.player-panel-r-control-download,
+.subdiv_allinline{
+	height:45px;
+    display:inline-block;
+    float:left;
+    _display:inline;
+    *display:inline;
+    zoom:1;
+}
+
+.playlist-container{
+	/*margin-left:5px;*/
+	padding-left:5px;
+	padding-top:5px;
+	width:375px; 
+	height:215px; 
+	background-color: #fff;
+	border-top:2px solid #dfdfdf; 
+}
+.playlist-title{
+	width:370px; 
+	height:20px; 
+	background-color: #dfdfdf;
+	text-align: center;
+	font-size: 15px;
+	font-family: Microsoft YaHei;
+}
+.playlist-scroll-panel{
+	width:370px; 
+	height:190px; 
+	overflow:auto;	
+	background-color: #fff;
+	font-size: 10px;
+	font-family: Microsoft YaHei;
+	line-height: 20px;
+}
+.listtable{
+	width:350px; 
+	border-collapse: collapse;
+}
+
+#playlist th, 
+#playlist td {
+  padding-left: 20px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #EAEAEA;
+} 

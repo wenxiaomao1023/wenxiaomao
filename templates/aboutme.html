@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block script %}
+<style>
+.aboutme-container{
+	font-size:14px;
+	width:280px;
+	margin:0 auto;
+}
+.aboutme-inner{
+	margin:10px 0;
+}
+.img-div{
+	width:150px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="aboutme-container">
+<div class="aboutme-inner">
+<div>90后阳光宅男</div>
+<div>爱猫爱狗爱运动</div>
+<div>相貌平庸气质佳</div>
+<div>喜欢踢足球</div>
+<div>喜欢吃茄子</div>
+<div>喜欢做挑战自己的事情</div>
+<div>是一只有梦想的猫</div>
+</div>
+<div class="img-div"><img src="{% static 'img/mao6.gif' %}"></div>
+<div class="aboutme-inner">
+<div>工作经历</div>
+<div>北京乐视致新电子商务（测试开发，至今）</div>
+<div>北京东讯赢创科技（安卓手机自动化测试）</div>
+<div>沈阳华立德电子科技（功能手机MMI开发）</div>
+</div>
+<div class="aboutme-inner">
+<div>联系我</div>
+<div>wenxiaomao1023@163.com</div>
+</div>
+<div class="img-div"><img src="{% static 'img/mao7.gif' %}"></div>
+</div>
+{% endblock %}

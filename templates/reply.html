@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{%load staticfiles%}
+{% block script %}
+<script type="text/javascript">
+	var page=1;
+	var pageMax=1;
+	var recordNum=0;
+	var showMax=5;
+	
+	function submitForm(replyId) {
+		var content = $("#input-content"+replyId).val().trim();
+		var username = $("#username"+replyId).val().trim();
+		var email = $("#email"+replyId).val().trim();
+		if(username==""){
+			alert("请填写昵称");
+			return;
+		}
+		if(content==""){
+			alert("请填写留言内容");
+			return;
+		}
+		content=content.replace(/\n/g,"<br/>");
+		$.ajax({
+			type : "POST",
+			async : false,
+			url : "/addReply",
+			data : {
+				username:username,
+				email:email,
+				content:content,
+				replyId:replyId
+			},
+			dataType : "json",
+			success : function(data) {
+				if(data["state"]=="SUCCESS"){
+					$("#input-content"+replyId).val("");
+					$("#username"+replyId).val("");
+					$("#email"+replyId).val("");
+					getReplyMessage();
+				}else{
+					alert(data["msg"]);
+				}
+			},
+			error : function(data) {
+				alert("添加失败");
+				//alert(data.responseText);
+			}
+		});
+	}
+	
+    function clearForm() {
+    	if($("#input-content0").val()!=""){
+    		$.messager.confirm("操作提示", "确认清空？", function (data) {
+	            if (data) {
+	                $("#input-content0").val("");
+	            }
+        	});
+    	}
+    }
+    
+	function getReplyMessage(){
+		$.ajax({
+			type : "POST",
+			async : true,
+			url : "/getReply",
+			dataType : "json",
+			data : {
+				page:page
+			},
+			success : function(data) {
+				recordNum = data['total'];
+				pageMax = Math.ceil(data['total'] / showMax);
+				if(pageMax==0)
+					pageMax=1;	
+				genReplyMsgList(data);
+			},
+			error : function(data) {
+				alert("获取留言信息失败");
+			}
+		});
+	}
+	
+	function genReplyMsgList(data){
+		var html="";
+		var strIds;
+		//var indentValue=60;
+		var indentValue=20;
+		for(var i=0;i<data["rows"].length;i++){
+			var replyname="";
+			var btnReply="";
+			var outerPaddingTop="0px";
+			if(data["rows"][i].reply_id!="0"){
+				//replyname+="  回复  "+data["rows"][i].reply_username;
+				//replyname+="  回复"+reply_floor+"楼  "+data["rows"][i].reply_realName;
+				//replyname+="  回复"+reply_floor+"楼  "+data["rows"][i].reply_realName;
+			}
+			//6级以后不许回复，根据缩进宽度设定
+			if(data["rows"][i].indent<6){
+				btnReply="<a style='cursor:pointer' onclick='showReplyInput("+data["rows"][i].id+")'>回复</a>";
+			}
+			if(data["rows"][i].indent==0){
+				html+="<div class=reply-blank></div>";
+				outerPaddingTop="10px";
+			}
+			html+="<div class=replys-outer style='padding-top:"+outerPaddingTop+"'>"
+					//+"<div class=replys style='margin-left:"+data["rows"][i].indent*indentValue+"px;width:816-"+data["rows"][i].indent*indentValue+"px'>"
+					+"<div class=replys style='margin-left:"+data["rows"][i].indent*indentValue+"px;'>"
+					//+"<div class=replys-username>"+data["rows"][i].username + replyname +"</div>"
+					//+"<div class=replys-username>"+data["rows"][i].realName + replyname +"<span>"+replyIndex+"楼<span></div>"
+					+"<div class=replys-username>"+data["rows"][i].username+"</div>"
+					+"<div class=replys-content>"+data["rows"][i].content+"</div>"
+					+"<div class=replys-datetime>"+data["rows"][i].datetime+btnReply+"</div>"
+					+"<div class=replys-container id="+data["rows"][i].id+">"
+					+"	<div class=reply-input>"
+					+"		<div class=reply-input-container>"
+					+"		<div class=reply-input-top>"
+					+"			<div style='margin:5px 0'>昵称&nbsp;<input id='username"+data["rows"][i].id+"' placeholder='必填'></input></div>"
+					+"			<div style='margin:5px 0'>邮箱&nbsp;<input id='email"+data["rows"][i].id+"' placeholder='可填'></input></div>"
+					+"		</div>"
+					+"		<div class=reply-input-bottom>"
+					+"			<textarea id='input-content"+data["rows"][i].id+"' class=textarea2></textarea>"
+					+"			<div class=reply-input-bottom-btn>"
+					+"				<button type='button' onclick='submitForm("+data["rows"][i].id+")'>回复</button>"
+					+"			</div>"
+					+"		</div>"
+					+"		</div>"
+					+"	</div>"
+					+"</div>"
+					+"</div>"
+					+"</div>";	
+		}
+		
+		var tab = "<div class=pageControl><a href='javascript:goFistPage();'>&nbsp;首页 | </a>"
+					+ "<a href='javascript:goPrePage();'>&nbsp;上一页 | </a>"
+					+ "<a href='javascript:goNextPage();'>&nbsp;下一页 | </a>"
+					+ "<a href='javascript:goLastPage();'>&nbsp;末页 | </a>"
+					+ "&nbsp;当前"+ page+ "/" + pageMax + "页</div>";
+					//+ "&nbsp;当前"+ page+ "/" + pageMax + "页 | 共"+recordNum+"条留言</div>";
+
+		$(".reply-list")[0].innerHTML = html+tab;
+		
+	}
+	
+	function showReplyInput(i){
+		var id="#"+i;
+		if($(id).css("display")=="none"){
+			$(id).css("display","block");
+		}else{
+			$(id).css("display","none");
+		}
+	}
+	
+	//分页
+	function goFistPage() {
+		if(page==1)
+			return;
+		page = 1;
+		getReplyMessage();
+	}
+	
+	function goPrePage() {
+		if (page <= 1)
+			return;
+		page--;
+		getReplyMessage();
+	}
+	
+	function goNextPage() {
+		if (page >= pageMax)
+			return;
+		page++;
+		getReplyMessage();
+	}
+	
+	function goLastPage() {
+		if(page==pageMax)
+			return;
+		page = pageMax;
+		getReplyMessage();
+	}
+	
+</script>
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/reply.css' %}"/>
+<!-- <marquee>欢迎留言！</marquee> -->
+<div class="reply-container">
+	<div class="reply-input-container">
+		<div>
+			<div style="margin:5px 0;">昵称&nbsp;<input id="username0" placeholder="必填"></input></div>
+			<div style="margin:5px 0;">邮箱&nbsp;<input id="email0" placeholder="可填"></input></div>
+		</div>
+		<textarea id="input-content0" name="message_box" placeholder="留下脚印，踩踩踩" class="textarea"></textarea>
+		<div style="text-align:center;">
+    		<button type='button' onclick="submitForm(0)">留言</button>
+    	</div>    
+	</div>
+    <div class="reply-list"></div>
+</div>
+
+<script>
+	getReplyMessage();
+</script>
+{% endblock %}
+
+
+

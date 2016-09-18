@@ -1,0 +1,29 @@
+.welcomeText, .welcomeText2, .welcomeText3 {
+	width: 245px;
+	height: 66px;
+	position: absolute;
+	text-align: center;
+	font-size: 32px;
+	font-family: Microsoft YaHei;
+	display: none;
+}
+
+.welcomeText {
+	background: #FC0;
+}
+
+.welcomeText2 {
+	background: #CCC;
+}
+
+.welcomeText3 {
+	background: #8C0;
+}
+
+.car {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: -1;
+	display: none;
+}

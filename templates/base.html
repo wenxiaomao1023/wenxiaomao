@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+<title>温小猫的博客</title> 
+{%load staticfiles%}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/header.css' %}">
+<link rel="stylesheet" href="{% static 'css/gzwm.css' %}">
+{% if audioplayer %}
+<link rel="stylesheet" href="{% static 'css/audioplayer.css' %}">
+{% endif %}
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/phone.css' %}"> -->
+<!-- <script src="{% static 'js/jquery.min.js' %}"></script> -->
+<script src="{% static 'js/jquery-1.4.4.min.js' %}"></script>
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/skin.js' %}"></script>
+{% if audioplayer %}
+<script src="{% static 'js/audioplayer.js' %}"></script>
+{% endif %}
+{% block script %}{% endblock %}
+</head>
+<body class="bg_skin_1">
+	<div class="base">
+		<div class="header">
+			<div id="logo" class="f_l logo">
+				<div class="logo-l-img">
+					<img class="logo-l-img" src="{% static 'img/mao5.jpg' %}"></img>
+				</div>
+				<div class="logo-r-title">
+					<div class="logo-r-title-t">温小猫的博客</div>
+					<div class="logo-r-title-b">分享 生活喜乐 记录 人生点滴</div>
+				</div>
+			</div>
+			<div id="topnav" class="f_r">
+				<ul>
+					<li><a href="/index">首页</a></li>
+					<li><a href="/article">文章</a></li><!-- target="_blank" -->
+					<li><a href="/gallery">相册</a></li>
+					<li><a href="/aboutme">关于我</a></li>
+					<li><a href="/reply">留言</a></li>
+					<li><a href="javascript:setupWallpaperPop();">换肤</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="setup-wallpaper-pop" id="setup-wall-pop">
+			<table>
+				<tr>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(1)"><img
+							src="{% static 'img/bg/bg.jpg' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(2)"><img
+							src="{% static 'img/bg/bg21.jpg' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(3)"><img
+							src="{% static 'img/bg/bg23.JPG' %}"></img></a></td>
+				</tr>
+				<tr>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(4)"><img
+							src="{% static 'img/bg/bg13.gif' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(5)"><img
+							src="{% static 'img/bg/bg18.GIF' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(6)"><img
+							src="{% static 'img/bg/bg20.jpg' %}"></img></a></td>
+				</tr>
+				<tr>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(7)"><img
+							src="{% static 'img/bg/bg14.gif' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(8)"><img
+							src="{% static 'img/bg/bg15.jpg' %}"></img></a></td>
+					<td><a href="javascript:void(0);" onclick="setWallpaper(9)"><img
+							src="{% static 'img/bg/bg11.jpg' %}"></img></a></td>
+				</tr>
+			</table>
+		</div>
+
+
+		<div class="main_box">
+			<div id="l_box" class="l_box">{% block content %}{%endblock %}</div>
+
+			<div id="r_box" class="r_box">
+
+				<div class="gzw">
+					<div class="gzw-top">
+						<img src="{% static 'img/mao4.jpg' %}" usemap="#maomap">
+					</div>
+					<div class="gzw-bottom">
+						<div class="gzwm">
+							<ul>
+								<li><a class="xlwb"
+									href="http://weibo.com/3354525650/profile?topnav=1&wvr=6"
+									target="_blank">新浪微博</a></li>
+								<!-- wen51sina an一个6 -->
+								<li><a class="txwb"
+									href="http://t.qq.com/wendadapaopaotang" target="_blank">腾讯微博</a></li>
+								<li><a class="rss" href="#">RSS</a></li>
+								<!-- portal.php?mod=rss target="_blank"-->
+								<li><a class="wx" href="mailto:wenxiaomao1023@163.com">邮箱</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				{% if audioplayer %}
+				<div class="audioplayer-container">
+					<audio id="myaudio" autoplay="autoplay">
+						HTML5 audio not supported
+						<br> 同学你的浏览器太古老了 -。- 快快换新的谷歌、火狐、360吧
+					</audio>
+					<div class="player-panel">
+						<div class="player-panel-cover">
+							<img class=player-panel-img id="cover"
+								src="{% static 'img/audioplayer/cover/default.png' %}">
+						</div>
+						<div class="player-panel-r">
+							<div class="player-panel-r-singer" id="singer"></div>
+							<div class="player-panel-r-songname" id="songname"></div>
+							<div class="player-panel-r-songtime" id="songtime"></div>
+							<div class="player-panel-r-progressbar">
+								<canvas id="canvas" width=255 height=7>
+					                canvas not supported
+					            	</canvas>
+							</div>
+							<div class="player-panel-r-control">
+								<div class="player-panel-r-control-start">
+									<a href="javascript:void(0);" onclick="playAudio();"><img
+										id="btn_start"
+										src="{% static 'img/audioplayer/btn_start.png' %}"></a>
+								</div>
+								<div class="player-panel-r-control-pre">
+									<a href="javascript:void(0);" onclick="preAudio();"><img
+										src="{% static 'img/audioplayer/btn_pre.png' %}"></a>
+								</div>
+								<div class="player-panel-r-control-pre">
+									<img src="{% static 'img/audioplayer/line.png' %}">
+								</div>
+								<div class="player-panel-r-control-next">
+									<a href="javascript:void(0);" onclick="nextAudio();"><img
+										src="{% static 'img/audioplayer/btn_next.png' %}"></a>
+								</div>
+								<div class="player-panel-r-control-pre">
+									<img src="{% static 'img/audioplayer/line.png' %}">
+								</div>
+								<div class="player-panel-r-control-singleloop">
+									<a href="javascript:void(0);" onclick="singleLoopModel();"><img
+										id="btn_singleloop"
+										src="{% static 'img/audioplayer/btn_singleloop_select.png' %}"></a>
+								</div>
+								<div class="player-panel-r-control-pre">
+									<img src="{% static 'img/audioplayer/line.png' %}">
+								</div>
+								<div class="player-panel-r-control-listloop">
+									<a href="javascript:void(0);" onclick="listLoopModel();"><img
+										id="btn_listloop"
+										src="{% static 'img/audioplayer/btn_listloop_select.png' %}"></a>
+								</div>
+								<div class="player-panel-r-control-pre">
+									<img src="{% static 'img/audioplayer/line.png' %}">
+								</div>
+								<div class="player-panel-r-control-download">
+									<a href="javascript:void(0);" onclick="downloadAudio();"><img
+										id="btn_download"
+										src="{% static 'img/audioplayer/btn_download.png' %}"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="playlist-container">
+						<div class="playlist-title">歌曲列表</div>
+						<div class="playlist-scroll-panel">
+							<table class="listtable" id="playlist"></table>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+				
+				<div class="article_top_list"></div>
+				<div class="tag_category"></div>
+				<div class="friendlinks"></div>
+				<div style="height: 100px;"></div>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p class="ft-copyright">欢迎来到 温小猫的博客</p>
+			<div id="tbox">
+				<!-- <a id="togbook" href="/"></a> -->
+				<a id="gotop" href="javascript:window.scroll(0,0)"></a>
+			</div>
+		</div>
+	</div>
+<script>
+function navResize(){
+	$("#topnav a").css("width",Math.floor($("#topnav").width()/$('#topnav ul').children('li').length));
+}
+
+navResize();
+window.onresize = function(){
+	navResize();
+}
+</script>
+</body>
+</html>
