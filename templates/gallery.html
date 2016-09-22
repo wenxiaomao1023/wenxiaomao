@@ -5,7 +5,6 @@
 .gallery-container{
 	margin:0 auto;
 }
-
 /*修改gallery_cover width和margin的时候注意下面的公式
 $(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));*/
 .gallery_cover{
@@ -13,10 +12,17 @@ $(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150
 	float:left;
 	margin:4px;
 	background-color:#fff;
+	border-radius:5px;
 }
 .gallery_cover_img{
+	
+}
+.gallery_cover_img img{
+	height:150px;
+	border-radius:5px;
 }
 .gallery_cover_desc{
+	padding:0 5px;
 }
 .gallery_cover_desc_name{
 	float:left;
@@ -61,10 +67,16 @@ function getAlbum() {
 <div class="gallery-main"></div>
 </div>
 <script>
-window.onresize = function(){
-	$(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
-}
-$(".gallery-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
+var margin=4;
+
+/*
+$(document).ready(function(){ 
+	window.onresize = function(){
+		$(".gallery-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
+	}
+	$(".gallery-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
+});
+*/
 getAlbum();
 </script>
 {% endblock %}

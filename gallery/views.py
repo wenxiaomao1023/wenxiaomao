@@ -6,9 +6,9 @@ from django.shortcuts import render
 from gallery.models import Album, Photo
 
 GALLERY_PATH="/static/gallery/"
-# Create your views here.
+
 def gallery(request):
-    return render(request,"gallery.html")
+    return render(request,"gallery.html",{"is_gallery":True})
 
 def getAlbums(request,albumId=None):
     if albumId!=None:
@@ -18,7 +18,6 @@ def getAlbums(request,albumId=None):
     total=items.count()
     jsonword=[]
     for item in items: 
-        data = []
         data = {'id':item.id,
                 'name':item.name, 
                 'cover':'http://%s%s%s'%(request.get_host(),GALLERY_PATH,item.cover),
@@ -30,26 +29,27 @@ def getAlbums(request,albumId=None):
 def getAlbumById(request,albumId):
     return getAlbums(request,albumId)
 
-def photo(request,albumId,photoId):
-    context={"albumId":albumId}
-    return render(request,"photo.html",context)
-
 def album(request,albumId):
-    context={"albumId":albumId}
+    context={"albumId":albumId,
+             "is_album":True}
     return render(request,"album.html",context)
 
 def getPhotos(request):
     albumId=request.GET["albumId"]
+    pageIndex=int(request.GET["pageIndex"])
     items=Photo.objects.filter(albumId_id=albumId)
-    total=items.count()
+    #total=items.count()
+    limit=12
+    loadmore=False
+    if (pageIndex+1)*limit<items.count():
+        loadmore=True
     jsonword=[]
-    for item in items: 
-        data = []
+    for item in items[pageIndex*limit:(pageIndex+1)*limit]: 
         data = {'id':item.id,
                 'desc':item.desc, 
                 'path':'http://%s%s%s'%(request.get_host(),GALLERY_PATH,item.path),
                 'datetime':item.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'albumId':item.albumId_id}
         jsonword.append(data)
-    return HttpResponse(json.dumps({'total':total, 'rows':jsonword}))
+    return HttpResponse(json.dumps({'total':limit, 'rows':jsonword, 'loadmore':loadmore }))
 

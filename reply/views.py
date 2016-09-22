@@ -7,10 +7,8 @@ from django.shortcuts import render
 
 from index.views import ret
 from reply.models import Reply
-
-
 # from django.core.checks.security import csrf
-# Create your views here.
+
 def reply(request):
     return render(request,"reply.html")
 

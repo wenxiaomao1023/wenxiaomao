@@ -185,15 +185,13 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/reply.css' %}"/>
 <!-- <marquee>欢迎留言！</marquee> -->
 <div class="reply-container">
-	<div class="reply-input-container">
-		<div>
+	<div style="padding:10px;">
+		<div class="reply-input-container" style="border:1px solid #ccc;">
 			<div style="margin:5px 0;">昵称&nbsp;<input id="username0" placeholder="必填"></input></div>
 			<div style="margin:5px 0;">邮箱&nbsp;<input id="email0" placeholder="可填"></input></div>
+			<textarea id="input-content0" name="message_box" placeholder="留下脚印，踩踩踩" class="textarea"></textarea>
+			<button type='button' onclick="submitForm(0)">留言</button>
 		</div>
-		<textarea id="input-content0" name="message_box" placeholder="留下脚印，踩踩踩" class="textarea"></textarea>
-		<div style="text-align:center;">
-    		<button type='button' onclick="submitForm(0)">留言</button>
-    	</div>    
 	</div>
     <div class="reply-list"></div>
 </div>

@@ -9,7 +9,6 @@ from django.template.context_processors import csrf
 from django.utils.translation import ugettext
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 
-# Create your views here.
 def ret(state,msg=''):
     if state:
         s="SUCCESS"

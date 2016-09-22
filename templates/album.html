@@ -10,23 +10,95 @@
 	float:left;
 	margin:4px;
 }
+.photo_div img{
+	margin:5px 0;
+}
+.photo-main{
+}
+.btn-load{
+	background-color:#48AE15;
+	text-align:center;
+	color:#fff;
+	padding:5px;
+	margin:5px;
+	widht:100%;
+	clear:both;
+	cursor:pointer;
+	border-radius:5px;
+}
 </style>
+<link rel="stylesheet" href="{% static 'css/jquery-fullsizable.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery-fullsizable-theme.css' %}">
+<script src="{% static 'js/jquery.touchSwipe.min.js' %}"></script>
+<script src="{% static 'js/jquery.fullsizable.js' %}"></script>
 <script>
+function getMinHeightDivId(col){
+	var minDivHeight=$("#photo_div_0").height();
+	var id=0;
+	for(k=0;k<col;k++){
+		var d="#photo_div_"+k;
+		if($(d).height()<minDivHeight){
+			minDivHeight=$(d).height();
+			divId="#photo_div_"+k;
+			id=k;
+		}
+		//console.log($(d).height());
+	}
+	//console.log(id);
+	//console.log("--------------------------");
+	return "#photo_div_"+id;
+}
+
+function setPhotoCol(){
+	col=Math.floor($("#l_box").width() / (150+2*margin));
+	var html="";
+	for(var i=0;i<col;i++){
+		html+='<div id="photo_div_'+i+'" class="photo_div"></div>';
+	}
+	$(".photo-main").append(html);	
+}
+
 function getPhoto() {
 	$.ajax({
 		type : "GET",
-		async : true,
+		async : false,
 		url : "/getPhotos",
 		data : {
-			albumId:"{{albumId}}"
+			albumId:"{{albumId}}",
+			pageIndex:pageIndex
 		},
 		dataType : "json",
 		success : function(data) {
-			var html="";
-			for(var i=0;i<data["rows"].length;i++){
-				html+='<div class="photo_div"><img src="'+data["rows"][i].path+'"></div>';
+			if(data["loadmore"]==true){
+				$(".load-more")[0].innerHTML='<div class="btn-load" onclick="getPhoto()">加 载 更 多</div>';	
+			}else{
+				$(".load-more")[0].innerHTML='<div class="btn-load">无 更 多 加 载</div>';	
 			}
-			$(".photo-main")[0].innerHTML=html;
+			for(var i=0;i<data["rows"].length;i++){
+				var photoId=data["rows"][i].id;
+				var albumId=data["rows"][i].albumId;
+				//var divId="#photo_div_"+i%col;
+				var divId=getMinHeightDivId(col);
+				$(divId).append('<a href="'+data["rows"][i].path+'"><img src="'+data["rows"][i].path+'"></a>');
+				//divId=getMinHeightDivId(col);
+			}
+			pageIndex++;
+			$('.photo-main a').fullsizable({
+		      	detach_id: 'photo-container'
+		    });
+		    $(document).on('fullsizable:opened', function(){
+				$("#jquery-fullsizable").swipe({
+					swipeLeft: function(){
+				  		$(document).trigger('fullsizable:next')
+					},
+					swipeRight: function(){
+					  	$(document).trigger('fullsizable:prev')
+					},
+					swipeUp: function(){
+					  	$(document).trigger('fullsizable:close')
+					}
+				});
+		    });
 		},
 		error : function(data) {
 			alert("getPhoto() error");
@@ -53,18 +125,26 @@ function getNav() {
 		}
 	});
 }
+
 </script>
 {% endblock %}
 {% block content %}
-<div class="photo-container">
+<div id="photo-container" class="photo-container">
 <div class="gallery-nav"></div>
 <div class="photo-main"></div>
+<div class="load-more"></div>
 </div>
 <script>
+var pageIndex=0;
+var margin=4;
+var col=0;
+/*
 window.onresize = function(){
-	$(".photo-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
+	$(".photo-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
 }
-$(".photo-container").css("width",Math.floor($("#l_box").width() / 150) * (150 + 2*4));
+$(".photo-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
+*/
+setPhotoCol();
 getNav();
 getPhoto();
 </script>

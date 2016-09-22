@@ -1,9 +1,119 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block script %}
-<!-- <script src="{% static 'xheditor/xheditor-1.1.14-zh-cn.min.js' %}"></script> -->
+<style>
+.article-category-container{
+	background-color:#fff;
+}
+.article-category-container-inner{
+	float:left;
+	padding:2px 5px;
+	margin:2px 5px;
+	border-radius:5px;
+}
+.article-category-container-inner a{
+	color:#fff;
+}
+.color0{background-color:#FE4365;}
+.color1{background-color:#A2CD5A;}
+.color2{background-color:#FFA500;}
+.color3{background-color:#DC5712;}
+.color4{background-color:#1DBF97;}
+.color5{background-color:#26BCD5;}
+.color6{background-color:#9370DB;}
+.color7{background-color:#43CD80;}
+.color8{background-color:#CD3333;}
+.color9{background-color:#838B83;}
+
+.article-container{
+	padding:0 10px;
+}
+.article-inner{
+	background-color:#fff;
+	border-bottom:1px solid #ccc;
+	padding:10px 10px;
+}
+.article-inner-title{
+	font-size:18px;
+}
+.article-inner-desc{
+	font-size:14px;
+}
+.article-inner-readmore a{
+	font-size:14px;
+	color:#BBB;
+}
+.article-inner-bottom{
+	clear:both;
+	height:20px;
+	font-size:10px;
+	color:#1DBF97;
+}
+.article-inner-bottom a{
+	color:#1DBF97;
+}
+.article-inner-category{
+	float:right;
+}
+.article-inner-datetime{
+	float:left;
+}
+</style>
+<script>
+function getArticleCategory() {
+	$.ajax({
+		type : "GET",
+		async : true,
+		url : "/getArticleCategory",
+		data : {
+		},
+		dataType : "json",
+		success : function(data) {
+			var html="";
+			for(var i=0;i<data["rows"].length;i++){
+				var colorstyle="color"+i%10;
+				html+="<div class='article-category-container-inner "+colorstyle+"'><a href='/article/"+data["rows"][i].categoryId+"'>"+data["rows"][i].categoryName+"</a></div>";
+			}
+			$(".article-category-container")[0].innerHTML=html;
+		},
+		error : function(data) {
+			alert("getArticleCategory() error");
+		}
+	});
+}
+
+function getArticle(){
+	var data={{data|safe}};
+	//console.log(data);
+	var html="";
+	for(var i=0;i<data["rows"].length;i++){
+		var categoryId=data["rows"][i].categoryId;
+		var articleId=data["rows"][i].id;
+		var is_article=data["rows"][i].is_article;
+		var article_inner_content="";
+		if(is_article){
+			article_inner_content='<div class="article-inner-desc">'+data["rows"][i].content+'</div>';
+		}else{
+			article_inner_content='<div class="article-inner-desc">'+data["rows"][i].desc+'</div>'
+								+'<div class="article-inner-readmore"><a href="/article/'+categoryId+'/'+articleId+'">阅读全文>></a></div>';
+		}
+		html+='<div class="article-inner">'
+			+'<div class="article-inner-title"><a href="/article/'+categoryId+'/'+articleId+'">'+data["rows"][i].title+'</a></div>'
+			+article_inner_content
+			+'<div class="article-inner-bottom">'
+			+'<div class="article-inner-category"><a href="/article/'+data["rows"][i].categoryId+'">'+data["rows"][i].categoryName+'</a></div>'
+			+'<div class="article-inner-datetime">'+data["rows"][i].datetime+'</div>'
+			+'</div>'
+			+'</div>';
+	}
+	$(".article-container")[0].innerHTML=html;
+}
+</script>
 {% endblock %}
 {% block content %}
-<!-- <textarea name="content"  class="xheditor {width:'700',height:'400',submitID:'submitId'}">test</textarea> -->
-<div>此界面编写中</div>
+<div class="article-container"></div>
+<script>
+getArticle();
+getArticleCategory();
+</script>
 {% endblock %}

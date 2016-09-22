@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from article.views import article
-from gallery.views import gallery, photo, getAlbumById, \
+from article.views import article, getArticleCategory
+from gallery.views import gallery, getAlbumById, \
      album, getAlbums, getPhotos
 from index.views import welcome, index, login, aboutme
 from reply.views import reply, getReply, addReply
@@ -25,36 +25,33 @@ from reply.views import reply, getReply, addReply
 
 #from django.contrib import admin
 urlpatterns = [
-    #url(r'^admin/', admin.site.urls),
-
-    url(r'^welcome/?$', welcome),
-    
+    ##############################################################################
+    #首页
     url(r'^index/?$', index),
-    
+    ##############################################################################
+    #文章
+    url(r'^article/(?P<categoryId>\d+)/(?P<articleId>\d+)/?$', article),
+    url(r'^article/(?P<categoryId>\d+)/?$', article),
     url(r'^article/?$', article),
-    
-    #url(r'^music/?$', index),
-    
+    url(r'^getArticleCategory', getArticleCategory),
+    ##############################################################################
     #相册
-    #url(r'^gallery/\d+/?$', photo),
-    url(r'^gallery/(?P<albumId>\d+)/(?P<photoId>\d+)/?$', photo),
     url(r'^gallery/(?P<albumId>\d+)/?$', album),
     url(r'^gallery/?', gallery),
-    
     url(r'^getAlbums/(?P<albumId>\d+)/?$', getAlbumById),
     url(r'^getAlbums/?$', getAlbums),
     url(r'^getPhotos', getPhotos),
-    
-#     url(r'^photo/?$', photo),
-    
+    ##############################################################################
+    #关于我
+    url(r'^aboutme/?$', aboutme),
+    ##############################################################################
     #留言板
     url(r'^reply/?$', reply),
     url(r'^getReply$', getReply),
     url(r'^addReply', addReply),
-    
-    url(r'^login/?$', login),
-    
-    url(r'^aboutme/?$', aboutme),
-     
-    url(r'^', welcome),
+    ##############################################################################
+    #url(r'^admin/', admin.site.urls),
+    url(r'^welcome/?$', welcome),
+    url(r'^login/?$', login), 
+    url(r'^', index),
 ]

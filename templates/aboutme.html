@@ -4,11 +4,12 @@
 <style>
 .aboutme-container{
 	font-size:14px;
-	width:280px;
-	margin:0 auto;
+	margin-bottom:20px;
+	padding:10px;
+	background-color:#fff;
+	border-radius:5px;
 }
 .aboutme-inner{
-	margin:10px 0;
 }
 .img-div{
 	width:150px;
@@ -16,11 +17,12 @@
 </style>
 {% endblock %}
 {% block content %}
+<div style="padding:10px;">
 <div class="aboutme-container">
 <div class="aboutme-inner">
 <div>90后阳光宅男</div>
 <div>爱猫爱狗爱运动</div>
-<div>相貌平庸气质佳</div>
+<div>相貌平平气质佳</div>
 <div>喜欢踢足球</div>
 <div>喜欢吃茄子</div>
 <div>喜欢做挑战自己的事情</div>
@@ -38,5 +40,6 @@
 <div>wenxiaomao1023@163.com</div>
 </div>
 <div class="img-div"><img src="{% static 'img/mao7.gif' %}"></div>
+</div>
 </div>
 {% endblock %}

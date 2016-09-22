@@ -112,10 +112,18 @@ a:hover {
 		clear:both;
 	}
 	.r_box {
+		width: 100%;
+		clear:both;
+	}
+	.gzw,
+	.audioplayer-container {
 		display:none;
-		/*width: 380px;
-		margin:0 auto;
-		clear:both;*/
+	}
+	.article-category-container{
+		float:left;
+		clear:both;
+		margin:10px;
+		padding:5px;
 	}
 	#topnav {
 		width: 100%;
@@ -146,10 +154,26 @@ a:hover {
 		clear:none;
 	}
 	.r_box {
-		display:block;
 		width: 380px;
 		float:right;
 		clear:none;
+	}
+	.gzw{
+		display:block;
+	}
+	.audioplayer-container {
+		display:block;
+		width: 380px;
+		height: 345px;
+		padding-top: 5px;
+		margin-top: 15px;
+	}
+	.article-category-container{
+		float:right;
+		clear:both;
+		margin:0;
+		margin-top:15px;
+		padding:5px;
 	}
 	#topnav {
 		width: 670px;

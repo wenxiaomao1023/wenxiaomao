@@ -54,7 +54,10 @@ input{
 }
 
 .reply-input-container{
-	padding:10px;	
+	padding:10px 20px;
+	height:140px;
+	background-color:#fff;
+	border-radius:5px;
 }
 
 .reply-input-top {
@@ -92,7 +95,7 @@ input{
 
 .replys {
 	border: #CCC 1px solid;
-	border-radius: 10px;
+	border-radius: 7px;
 	padding: 10px 0;
 	background-color:#fff;
 }
