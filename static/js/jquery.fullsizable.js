@@ -280,9 +280,12 @@ Options:
       openOnClick: true,
       clickBehaviour: 'close',
       preload: true,
-      reloadOnOpen: false
+      reloadOnOpen: false,
+      firstInit:null
     }, opts || {});
-    prepareCurtain();
+    if(options.firstInit){
+      prepareCurtain();
+    }
     if (options.preload) {
       makeFullsizable();
     }

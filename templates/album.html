@@ -82,9 +82,6 @@ function getPhoto() {
 				var aId="photo_main_a_"+index;
 				$(".photo-main")[0].innerHTML+="<a id='"+aId+"' href='"+data["rows"][i].path+"'><img style='display:none;' src='"+data["rows"][i].path+"'></a>";
 				$(aId).hide();
-				$('.photo-main a').fullsizable({
-					detach_id: 'photo-container'
-				});
 				
 				(function(_i){
 					var index=pageIndex*pageShowImgNum+_i;
@@ -102,6 +99,10 @@ function getPhoto() {
 					});
 				})(i);
 			}
+			$('.photo-main a').fullsizable({
+				detach_id: 'photo-container',
+				firstInit: pageIndex==0 ? true:false
+			});
 			pageIndex++;
 		},
 		error : function(data) {
