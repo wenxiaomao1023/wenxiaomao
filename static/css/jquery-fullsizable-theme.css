@@ -43,8 +43,3 @@
 :fullscreen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }
 :-webkit-full-screen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }
 :-moz-full-screen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }
-/*
-本代码由素材家园收集并编辑整理;
-尊重他人劳动成果;
-转载请保留素材家园链接 - www.sucaijiayuan.com
-*/

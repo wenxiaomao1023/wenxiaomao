@@ -12,11 +12,6 @@ Options:
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
  */
-/*
-本代码由素材家园收集并编辑整理;
-尊重他人劳动成果;
-转载请保留素材家园链接 - www.sucaijiayuan.com
-*/
 (function() {
   var $, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
 
@@ -350,8 +345,3 @@ Options:
   };
 
 }).call(this);
-/*
-本代码由素材家园收集并编辑整理;
-尊重他人劳动成果;
-转载请保留素材家园链接 - www.sucaijiayuan.com
-*/
