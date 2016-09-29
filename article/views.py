@@ -1,10 +1,16 @@
+from datetime import datetime
 import json
+import os
 
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
 from article.models import ArticleCategory, Article
+from index.views import ret
 
+#MEDIA_ROOT="D:/wenxiaomao/"
+MEDIA_ROOT="/root/wen/wenxiaomao/"
+ARTICLE_PATH="static/article/"
 
 def getArticleCategory(request):
     items=ArticleCategory.objects.all()
@@ -16,27 +22,111 @@ def getArticleCategory(request):
         jsonword.append(data)
     return HttpResponse(json.dumps({'total':total, 'rows':jsonword}))
 
-def article(request,categoryId=None,articleId=None):
+def adminArticle(request,articleId=None):
+    if articleId!=None:
+        article=Article.objects.get(id=articleId)
+        jsn={"method":"edit",
+             "articleId":articleId,
+             "title":article.title,
+             "desc":article.desc,
+             "content":article.content,
+             "categoryId":article.categoryId_id,
+             "datetime":article.datetime.strftime("%Y-%m-%d %H:%M")}
+    else:
+        jsn={"method":"add"}
+    return render(request,"admin/article.html",{"data":json.dumps(jsn)})
+
+def uploadarticle(request):
+    method=request.POST["method"]
+    articleId=request.POST["articleId"]
+    dt=request.POST["datetime"]
+    title=request.POST["title"]
+    categoryId=int(request.POST["categoryId"])
+    desc=request.POST["desc"]
+    content=request.POST["content"]
+    if method=="add":
+        a=Article(title=title,desc=desc,content=content,datetime=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),categoryId_id=categoryId)
+        a.save()
+    elif method=="edit":
+        a=Article.objects.get(id=articleId)
+        a.title=title
+        a.desc=desc
+        a.content=content
+        a.categoryId_id=categoryId
+        a.datetime=dt
+        a.save()
+    return HttpResponse(ret(True,"Done"))
+
+def uploadfile(request):
+    _file = request.FILES["filedata"]#.getlist("filedata")
+    _type=_file.name.split(".")[1]
+    _file.name="%s.%s"%(datetime.now().strftime("%Y%m%d%H%M%S"),_type)
+    dt=datetime.now().strftime("%Y%m%d")
+    _imgdir="%s%s%s/" % (MEDIA_ROOT,ARTICLE_PATH,dt)
+    if not os.path.exists(_imgdir):
+        os.makedirs(_imgdir)
+    f_path="%s%s" % (_imgdir,_file.name)
+    with open(f_path, 'wb+') as info:
+        for chunk in _file.chunks():
+            info.write(chunk)
+    return HttpResponse(json.dumps({"err":"","msg":"http://%s/%s%s/%s"%(request.get_host(),ARTICLE_PATH,dt,_file.name)}))
+
+def uploadlink(request):
+    return uploadfile(request)
+
+def uploadimg(request):
+    return uploadfile(request)
+
+def uploadflash(request):
+    return uploadfile(request)
+
+def uploadmedia(request):
+    return uploadfile(request)
+
+def articleById(request,articleId=None):
+    return articleFilter(request,articleId=articleId)
+
+def articleByCategoryId(request,categoryId=None,pageIndex=None):
+    return articleFilter(request,pageIndex=pageIndex,categoryId=categoryId)
+    
+def articleFilter(request,pageIndex=None,categoryId=None,articleId=None):
     jsn={}
     if articleId!=None:
-        jsn=getArticleById(request,categoryId,articleId)
+        jsn=getArticle(request,articleId=articleId)
     else:
         if categoryId!=None:
-            jsn=getArticleByCategoryId(request,categoryId)
+            jsn=getArticle(request,pageIndex=pageIndex,categoryId=categoryId)
+        elif pageIndex!=None:
+            jsn=getArticle(request,pageIndex=pageIndex)    
         else:
-            jsn=getArticle(request)
+            jsn=getArticle(request,pageIndex=1)
     return render(request,"article.html",{"articlecategory":True,"data":jsn})
 
-def getArticle(request,categoryId=None,articleId=None):
+def getArticle(request,pageIndex=None,categoryId=None,articleId=None):
     is_article=False
+    catId=0
     if articleId!=None:
         items=Article.objects.filter(id=articleId)
         is_article=True
+        pindex=0
+        pmax=0
     else:
+        showMax=5
+        pageIndex=int(pageIndex)
         if categoryId!=None:
+            catId=categoryId
             items=Article.objects.filter(categoryId_id=categoryId)
+            c=items.count()
+            items=items.order_by("-datetime")[(pageIndex-1)*showMax:pageIndex*showMax]
         else:
             items=Article.objects.all()
+            c=items.count()
+            items=items.order_by("-datetime")[(pageIndex-1)*showMax:pageIndex*showMax]
+        if c%showMax==0:    
+            pmax=c/showMax
+        else:
+            pmax=c/showMax+1
+        pindex=pageIndex
     total=items.count()
     jsonword=[]
     for item in items:
@@ -49,10 +139,5 @@ def getArticle(request,categoryId=None,articleId=None):
               "categoryName":ArticleCategory.objects.get(id=item.categoryId_id).name,
               "is_article":is_article}
         jsonword.append(data)
-    return json.dumps({'total':total, 'rows':jsonword})
+    return json.dumps({'total':total, 'rows':jsonword, 'pageIndex':pindex, 'pageMax':pmax, 'categoryId':catId})
     
-def getArticleByCategoryId(request,categoryId):
-    return getArticle(request,categoryId)
-
-def getArticleById(request,categoryId,articleId):
-    return getArticle(request,categoryId,articleId)

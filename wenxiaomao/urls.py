@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from article.views import article, getArticleCategory
+from article.views import getArticleCategory, adminArticle, \
+    uploadlink, uploadimg, uploadflash, \
+    uploadmedia, uploadarticle, articleById, articleByCategoryId
 from gallery.views import gallery, getAlbumById, \
      album, getAlbums, getPhotos
 from index.views import welcome, index, login, aboutme
@@ -30,9 +32,17 @@ urlpatterns = [
     url(r'^index/?$', index),
     ##############################################################################
     #文章
-    url(r'^article/(?P<categoryId>\d+)/(?P<articleId>\d+)/?$', article),
-    url(r'^article/(?P<categoryId>\d+)/?$', article),
-    url(r'^article/?$', article),
+    url(r'^admin/article/?$', adminArticle),
+    url(r'^admin/article/a(?P<articleId>\d+)/?$', adminArticle),
+    url(r'^uploadarticle', uploadarticle),
+    url(r'^uploadlink', uploadlink),
+    url(r'^uploadimg', uploadimg),
+    url(r'^uploadflash', uploadflash),
+    url(r'^uploadmedia', uploadmedia),
+    url(r'^article/a(?P<articleId>\d+)/?$', articleById),
+    url(r'^article/(?P<categoryId>\d+)/(?P<pageIndex>\d+)/?$', articleByCategoryId),
+    url(r'^article/(?P<pageIndex>\d+)/?$', articleByCategoryId),
+    url(r'^article/?$', articleByCategoryId),
     url(r'^getArticleCategory', getArticleCategory),
     ##############################################################################
     #相册

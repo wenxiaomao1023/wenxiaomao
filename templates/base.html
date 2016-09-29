@@ -197,7 +197,8 @@ function navResize(){
 	$("#topnav a").css("width",Math.floor($("#topnav").width()/$('#topnav ul').children('li').length));
 }
 
-$(document).ready(function(){ 
+$(document).ready(function(){
+	$(".l_box").css("min-height",$(window).height()-100);
 	navResize();
 	{% if is_gallery %}
 	$(".gallery-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
@@ -206,6 +207,7 @@ $(document).ready(function(){
 	$(".photo-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));
 	{% endif %}
 	window.onresize = function(){
+		$(".l_box").css("min-height",$(window).height()-100);
 		navResize();
 		{% if is_gallery %}
 		$(".gallery-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));

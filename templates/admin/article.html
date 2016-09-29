@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block script %}
+<style>
+#article_title{
+}
+#article_desc{
+	width:100%;
+	height:200px;
+}
+#article_content{
+	width:100%;
+	height:400px;
+}
+.btnCode {
+	background: transparent url({% static 'img/code.png' %}) no-repeat 0px 0px;
+	background-position: -1px -3px;
+}
+</style>
+<script src="{% static 'xheditor/xheditor-1.2.2.min.js' %}"></script>
+<script src="{% static 'xheditor/xheditor_lang/zh-cn.js' %}"></script>
+<script>
+</script>
+{% endblock %}
+{% block content %}
+标题<input id="article_title"></input>
+分类<select id="article_category"></select>
+时间<input id="article_datetime"></input>
+<textarea id="article_desc"></textarea>
+<textarea id="article_content"></textarea>
+<div><button onclick="addArticle()">提交</button></div>
+<script>
+function getArticleCategory() {
+	$.ajax({
+		type : "GET",
+		async : true,
+		url : "/getArticleCategory",
+		data : {
+		},
+		dataType : "json",
+		success : function(data) {
+			var html="";
+			for(var i=0;i<data["rows"].length;i++){
+				html+="<option value='"+data["rows"][i].categoryId+"'>"+data["rows"][i].categoryName+"</option>";
+			}
+			$("#article_category")[0].innerHTML=html;
+			if(gData["method"]=="edit"){
+				$("#article_category").val(gData["categoryId"]);
+			}
+		},
+		error : function(data) {
+			alert("getArticleCategory() error");
+		}
+	});
+}
+
+function insertUpload(){
+	//alert("insertUpload");
+}
+
+function addArticle(){
+	var title=$("#article_title").val();
+	var categoryId=$("#article_category option:selected").val();
+	var desc=$("#article_desc").val();
+	var content=$("#article_content").val();
+	var datetime=$("#article_datetime").val();;
+	var method=gData["method"];//add / edit
+	var articleId=0;
+	if(method=="edit"){
+		articleId=gData["articleId"];
+	}
+	$.ajax({
+		type : "POST",
+		async : true,
+		url : "/uploadarticle",
+		data : {
+			method:method,
+			articleId:articleId,
+			datetime:datetime,
+			title:title,
+			categoryId:categoryId,
+			desc:desc,
+			content:content
+		},
+		dataType : "json",
+		success : function(data) {
+			if(data["state"]=="SUCCESS"){
+				location.href="/article";
+			}
+			alert(data["msg"]);
+		},
+		error : function(data) {
+			alert("addArticle() error");
+		}
+	});
+}
+
+var gData={{data|safe}};
+
+$(function(){
+	if(gData["method"]=="edit"){
+		$("#article_title").val(gData["title"]);
+		$("#article_desc").val(gData["desc"]);
+		$("#article_content").val(gData["content"]);
+		$("#article_datetime").val(gData["datetime"]);
+		//$("#article_category").val(gData["categoryId"]);
+	}
+   	var plugins={
+		Code:{c:'btnCode',t:'插入代码',h:1,e:function(){
+			var _this=this;
+			var htmlCode="<div>编程语言<select id='xheCodeType'>";
+				htmlCode+="<option value='html'>HTML/XML</option>";
+				htmlCode+="<option value='js'>Javascript</option>";
+				htmlCode+="<option value='css'>CSS</option>";
+				htmlCode+="<option value='php'>PHP</option>";
+				htmlCode+="<option value='java'>Java</option>";
+				htmlCode+="<option value='py'>Python</option>";
+				htmlCode+="<option value='pl'>Perl</option>";
+				htmlCode+="<option value='rb'>Ruby</option>";
+				htmlCode+="<option value='cs'>C#</option>";
+				htmlCode+="<option value='c'>C++/C</option>";
+				htmlCode+="<option value='vb'>VB/ASP</option>";
+				htmlCode+="<option value=''>其它</option>";
+				htmlCode+="</select></div><div>";
+				htmlCode+="<textarea id='xheCodeValue' wrap='soft' spellcheck='false' style='width:300px;height:100px;' />";
+				htmlCode+="</div><div style='text-align:right;'><input type='button' id='xheSave' value='确定' /></div>";			
+			var jCode=$(htmlCode),jType=$('#xheCodeType',jCode),jValue=$('#xheCodeValue',jCode),jSave=$('#xheSave',jCode);
+			jSave.click(function(){
+				_this.loadBookmark();
+				_this.pasteHTML('<pre class="brush: '+jType.val()+'">'+_this.domEncode(jValue.val())+'</pre>&nbsp;');
+				_this.hidePanel();
+				return false;	
+			});
+			_this.saveBookmark();
+			_this.showDialog(jCode);
+		}},
+		
+	};
+	$('#article_desc').xheditor({
+		plugins:plugins,  //使用我们定义的插件  
+		loadCSS:'<style>pre{margin-left:2em;border-left:3px solid #CCC;padding:0 1em;}</style>',
+		html5Upload:false,
+		onUpload:insertUpload,
+		upLinkUrl: "/uploadlink", 
+		upLinkExt: "zip,rar,txt", 
+		upImgUrl: "/uploadimg", 
+		upImgExt: "jpg,jpeg,gif,png", 
+		upFlashUrl: "/uploadflash", 
+		upFlashExt: "swf", 
+		upMediaUrl: "/uploadmedia", 
+		upMediaExt: "wmv,avi,wma,mp3,mid"
+	});
+	$('#article_content').xheditor({
+		plugins:plugins,  //使用我们定义的插件  
+		loadCSS:'<style>pre{margin-left:2em;border-left:3px solid #CCC;padding:0 1em;}</style>',
+		html5Upload:false,
+		onUpload:insertUpload,
+		upLinkUrl: "/uploadlink", 
+		upLinkExt: "zip,rar,txt", 
+		upImgUrl: "/uploadimg", 
+		upImgExt: "jpg,jpeg,gif,png", 
+		upFlashUrl: "/uploadflash", 
+		upFlashExt: "swf",
+		upMediaUrl: "/uploadmedia", 
+		upMediaExt: "wmv,avi,wma,mp3,mid"
+	});
+	$.extend(XHEDITOR.settings, { shortcuts: { 'ctrl+enter': addArticle} });
+	
+	getArticleCategory();
+	
+});
+
+</script>
+{% endblock %}
