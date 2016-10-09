@@ -100,7 +100,7 @@ a:hover {
 }
 
 /*手机*/
-@media screen and (min-width:240px) {
+@media screen and (min-width:240px) and (max-width: 767px) {
 	.base {
 		width: 100%;
 		margin: 0 auto;

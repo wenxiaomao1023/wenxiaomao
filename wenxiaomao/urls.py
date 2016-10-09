@@ -21,7 +21,7 @@ from article.views import getArticleCategory, adminArticle, \
     uploadmedia, uploadarticle, articleById, articleByCategoryId
 from gallery.views import gallery, getAlbumById, \
      album, getAlbums, getPhotos
-from index.views import welcome, index, login, aboutme
+from index.views import welcome, index, login, aboutme, getRecentUpdate
 from reply.views import reply, getReply, addReply
 
 
@@ -30,6 +30,7 @@ urlpatterns = [
     ##############################################################################
     #首页
     url(r'^index/?$', index),
+    url(r'^getRecentUpdate', getRecentUpdate),
     ##############################################################################
     #文章
     url(r'^admin/article/?$', adminArticle),
@@ -61,7 +62,7 @@ urlpatterns = [
     url(r'^addReply', addReply),
     ##############################################################################
     #url(r'^admin/', admin.site.urls),
+    #url(r'^login/?$', login), 
     url(r'^welcome/?$', welcome),
-    url(r'^login/?$', login), 
     url(r'^', index),
 ]

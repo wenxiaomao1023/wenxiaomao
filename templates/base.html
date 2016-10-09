@@ -208,6 +208,8 @@ $(document).ready(function(){
 	{% endif %}
 	window.onresize = function(){
 		$(".l_box").css("min-height",$(window).height()-100);
+		//index界面时间轴高度
+		$(".timeline-timepoint").css("height",$("#l_box").height());
 		navResize();
 		{% if is_gallery %}
 		$(".gallery-container").css("width",Math.floor($("#l_box").width() / (150+2*margin)) * (150 + 2*margin));

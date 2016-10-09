@@ -4,8 +4,8 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 
 from gallery.models import Album, Photo
+from wenxiaomao.settings import GALLERY_PATH
 
-GALLERY_PATH="/static/gallery/"
 
 def gallery(request):
     return render(request,"gallery.html",{"is_gallery":True})
@@ -20,7 +20,7 @@ def getAlbums(request,albumId=None):
     for item in items: 
         data = {'id':item.id,
                 'name':item.name, 
-                'cover':'http://%s%s%s'%(request.get_host(),GALLERY_PATH,item.cover),
+                'cover':'http://%s/%s%s'%(request.get_host(),GALLERY_PATH,item.cover),
                 'datetime':item.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'total':Photo.objects.filter(albumId_id=item.id).count()}
         jsonword.append(data)
@@ -47,7 +47,7 @@ def getPhotos(request):
     for item in items[pageIndex*limit:(pageIndex+1)*limit]: 
         data = {'id':item.id,
                 'desc':item.desc, 
-                'path':'http://%s%s%s'%(request.get_host(),GALLERY_PATH,item.path),
+                'path':'http://%s/%s%s'%(request.get_host(),GALLERY_PATH,item.path),
                 'datetime':item.datetime.strftime("%Y-%m-%d %H:%M:%S"),
                 'albumId':item.albumId_id}
         jsonword.append(data)

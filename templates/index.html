@@ -1,9 +1,291 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block script %}
-<!-- <script src="{% static 'xheditor/xheditor-1.1.14-zh-cn.min.js' %}"></script> -->
+<style>
+@media screen and (min-width:240px) and (max-width: 767px){
+	.timeline-date{
+		width:150px;
+		background-color:#C7C7C7;
+		text-align:center;
+		padding:2px 0;
+		color:#fff;
+		font-size:16px;
+		border-radius:5px;
+		margin-left:5px;
+		clear:both;
+	}
+	.timeline-timepoint{
+		z-index:-999;
+		position:absolute;
+		left:20px;
+		width:4px;
+		height:100%;
+		background-color:#CFD4D9;
+	}
+	.fl {
+		float:none;
+		clear:none;
+	}
+	.fr {
+		float:none;
+		clear:none;
+	}
+	.timeline-article-wrapper {  
+		width:80%;
+		margin:5px 0;
+		margin-left:40px;
+	    position: relative;
+	}
+	.timeline-article {  
+		min-height:60px;
+		padding:5px;
+		background-color:#FFF;
+	    position: relative;
+	    border: 1px solid #ccc;
+	    border-radius:3px;
+	}
+	.timeline-article-wrapper:before {  
+	    content: "";
+	    width: 8px;
+	    height: 8px;
+	    border-radius:3px;
+	    background-color:#B6B9C0;
+	    position: absolute;
+	    right: 100%;
+	    top: 30px;
+	    margin-top: -13px;
+	    margin-right: 14px;
+	}
+	.timeline-article:before {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 10px solid transparent;
+	    border-right-color: #ccc;
+	    position: absolute;
+	    right: 100%;
+	    top: 30px;
+	    margin-top: -20px;
+	}
+	.timeline-article:after {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 8px solid transparent;
+	    border-right-color: #fff;
+	    position: absolute;
+	    right: 100%;
+	    top: 30px;
+	    margin-top: -18px;
+	}
+}
+
+
+@media screen and (min-width:768px) {
+	.timeline-date{
+		width:150px;
+		background-color:#C7C7C7;
+		text-align:center;
+		padding:2px 0;
+		color:#fff;
+		font-size:16px;
+		border-radius:5px;
+		margin:0 auto;
+		clear:both;
+	}
+	.timeline-timepoint{
+		z-index:-999;
+		position:absolute;
+		left:338px;
+		width:4px;
+		height:100%;
+		background-color:#CFD4D9;
+	}
+	.fl {
+		float:left;
+		clear:left;
+	}
+	.fr {
+		float:right;
+		clear:right;
+	}
+	.timeline-article-wrapper-left,
+	.timeline-article-wrapper-right {  
+		width:300px;
+		margin:5px 0;
+	    position: relative;
+	}
+	.timeline-article-wrapper-left{
+		margin-left:20px;
+	}
+	.timeline-article-wrapper-right{
+		margin-right:20px;
+	}
+	.timeline-article-left,
+	.timeline-article-right {
+		min-height:60px;
+		padding:5px;
+		background-color:#FFF;
+	    position: relative;
+	    border: 1px solid #ccc;
+	    border-radius:3px;
+	}
+	.timeline-article-wrapper-left:before {
+	    content: "";
+	    width: 8px;
+	    height: 8px;
+	    border-radius:3px;
+	    background-color:#B6B9C0;
+	    position: absolute;
+	    left: 100%;
+	    top: 30px;
+	    margin-top: -13px;
+	    margin-left: 16px;
+	}
+	.timeline-article-wrapper-right:before {  
+	    content: "";
+	    width: 8px;
+	    height: 8px;
+	    border-radius:3px;
+	    background-color:#B6B9C0;
+	    position: absolute;
+	    right: 100%;
+	    top: 50px;
+	    margin-top: -13px;
+	    margin-right: 16px;
+	}
+	.timeline-article-left:before {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 10px solid transparent;
+	    border-left-color: #ccc;
+	    position: absolute;
+	    left: 100%;
+	    top: 30px;
+	    margin-top: -20px;
+	}
+	.timeline-article-left:after {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 8px solid transparent;
+	    border-left-color: #fff;
+	    position: absolute;
+	    left: 100%;
+	    top: 30px;
+	    margin-top: -18px;
+	}
+	.timeline-article-right:before {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 10px solid transparent;
+	    border-right-color: #ccc;
+	    position: absolute;
+	    right: 100%;
+	    top: 50px;
+	    margin-top: -20px;
+	}
+	.timeline-article-right:after {  
+	    content: "";
+	    width: 0;
+	    height: 0;
+	    border: 8px solid transparent;
+	    border-right-color: #fff;
+	    position: absolute;
+	    right: 100%;
+	    top: 50px;
+	    margin-top: -18px;
+	}
+}
+
+.timeline-article-title{
+	font-size:16px;
+}
+.timeline-article-desc{
+	font-size:14px;
+}
+.timeline-article-datetime{
+	font-size:12px;
+	color:#1DBF97;
+}
+.timeline-article-readmore a{
+	font-size: 14px;
+    color: #BBB;
+}
+</style>
 {% endblock %}
 {% block content %}
-<!-- <textarea name="content"  class="xheditor {width:'700',height:'400',submitID:'submitId'}">test</textarea> -->
-<div>此界面编写中</div>
+ <!-- 
+<div class="timeline">
+<div class="timeline-timepoint"></div>
+<div class="timeline-date">2016-09</div>
+<div class="timeline-article-wrapper fl timeline-article-wrapper-left"><div class="timeline-article timeline-article-left"><div>title</div><div>desc</div></div></div>
+<div class="timeline-article-wrapper fr timeline-article-wrapper-right"><div class="timeline-article timeline-article-right">文章2</div></div>
+<div class="timeline-article-wrapper fl timeline-article-wrapper-left"><div class="timeline-article timeline-article-left">文章3</div></div>
+<div class="timeline-article-wrapper fr timeline-article-wrapper-right"><div class="timeline-article timeline-article-right">文章4</div></div>
+<div class="timeline-date">2016-05</div>
+<div class="timeline-article-wrapper fl timeline-article-wrapper-left"><div class="timeline-article timeline-article-left">文章5</div></div>
+<div class="timeline-article-wrapper fr timeline-article-wrapper-right"><div class="timeline-article timeline-article-right">文章6</div></div>
+</div>
+ -->
+
+<div class="timeline">
+<div style="position:relative;"><div class="timeline-timepoint"></div></div>
+</div>
+
+<script>
+function getRecentDate() {
+	$.ajax({
+		type : "GET",
+		async : true,
+		url : "/getRecentUpdate",
+		data : {
+			//pageIndex:0
+		},
+		dataType : "json",
+		success : function(data) {
+			var html="";
+			var ym="";
+			var ymindex=0;
+			for(var i=0;i<data["rows"].length;i++){
+				var style_article_wapper="";
+				var style_article="";
+				if(ym!=data["rows"][i].ym){
+					ymindex=0;
+					ym=data["rows"][i].ym;
+					html+='<div class="timeline-date">'+ym+'</div>';
+				}
+				if(ymindex%2==0){
+					style_article_wapper="timeline-article-wrapper-left";
+					style_article="timeline-article-left";
+					style_f="fl";
+				}else{
+					style_article_wapper="timeline-article-wrapper-right";
+					style_article="timeline-article-right";
+					style_f="fr";
+				}
+				html+='<div class="timeline-article-wrapper '+style_f+' '+style_article_wapper+'">'
+					+'<div class="timeline-article '+style_article+'">'
+					+'<div class="timeline-article-title"><a href="/article/a'+data["rows"][i].id+'">'+data["rows"][i].title+'</a></div>'
+					+'<div class="timeline-article-desc">'+data["rows"][i].desc+'</div>'
+					+'<div class="timeline-article-readmore"><a href="/article/a'+data["rows"][i].id+'">阅读全文>></a></div>'
+					+'<div class="timeline-article-datetime">'+data["rows"][i].datetime+'</div>'
+					+'</div>'
+					+'</div>';
+				ymindex++;
+			}
+			$(".timeline").append(html);
+			$(".timeline-timepoint").css("height",$("#l_box").height());
+		},
+		error : function(data) {
+			alert("getRecentDate() error");
+		}
+	});
+}
+
+getRecentDate();
+
+</script>
 {% endblock %}

@@ -133,3 +133,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+
+#MEDIA_ROOT="D:/wenxiaomao/"
+MEDIA_ROOT="/root/wen/wenxiaomao/"
+
+ARTICLE_PATH="static/article/"
+
+GALLERY_PATH="static/gallery/"
+

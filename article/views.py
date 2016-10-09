@@ -7,10 +7,8 @@ from django.shortcuts import render
 
 from article.models import ArticleCategory, Article
 from index.views import ret
+from wenxiaomao.settings import MEDIA_ROOT, ARTICLE_PATH
 
-#MEDIA_ROOT="D:/wenxiaomao/"
-MEDIA_ROOT="/root/wen/wenxiaomao/"
-ARTICLE_PATH="static/article/"
 
 def getArticleCategory(request):
     items=ArticleCategory.objects.all()
@@ -57,31 +55,31 @@ def uploadarticle(request):
         a.save()
     return HttpResponse(ret(True,"Done"))
 
-def uploadfile(request):
+def uploadfile(request,prev):
     _file = request.FILES["filedata"]#.getlist("filedata")
     _type=_file.name.split(".")[1]
-    _file.name="%s.%s"%(datetime.now().strftime("%Y%m%d%H%M%S"),_type)
+    _file.name="%s%s.%s"%(prev,datetime.now().strftime("%Y%m%d%H%M%S"),_type)
     dt=datetime.now().strftime("%Y%m%d")
-    _imgdir="%s%s%s/" % (MEDIA_ROOT,ARTICLE_PATH,dt)
-    if not os.path.exists(_imgdir):
-        os.makedirs(_imgdir)
-    f_path="%s%s" % (_imgdir,_file.name)
+    _dir="%s%s%s/" % (MEDIA_ROOT,ARTICLE_PATH,dt)
+    if not os.path.exists(_dir):
+        os.makedirs(_dir)
+    f_path="%s%s" % (_dir,_file.name)
     with open(f_path, 'wb+') as info:
         for chunk in _file.chunks():
             info.write(chunk)
     return HttpResponse(json.dumps({"err":"","msg":"http://%s/%s%s/%s"%(request.get_host(),ARTICLE_PATH,dt,_file.name)}))
 
 def uploadlink(request):
-    return uploadfile(request)
+    return uploadfile(request,'l')
 
 def uploadimg(request):
-    return uploadfile(request)
+    return uploadfile(request,'i')
 
 def uploadflash(request):
-    return uploadfile(request)
+    return uploadfile(request,'f')
 
 def uploadmedia(request):
-    return uploadfile(request)
+    return uploadfile(request,'m')
 
 def articleById(request,articleId=None):
     return articleFilter(request,articleId=articleId)
