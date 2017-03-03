@@ -6,7 +6,7 @@ from django.shortcuts import render
 from gallery.models import Album, Photo
 from wenxiaomao.settings import GALLERY_PATH
 
-PAGE_SHOW_IMG_NUM=4
+PAGE_SHOW_IMG_NUM=12
 
 def gallery(request):
     return render(request, 'gallery.html', {'is_gallery':True})

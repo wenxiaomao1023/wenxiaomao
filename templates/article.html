@@ -28,9 +28,23 @@
 .article-container{
 	padding:0 10px;
 }
-.article-container img{
+/*.article-container img{
 	width:auto;
 	max-width:400px;
+}*/
+/*手机*/
+@media screen and (min-width:240px) and (max-width: 767px) {
+	.article-container img{
+		/*width:auto;*/
+		/*max-width:400px;*/
+	}
+}
+/*电脑*/
+@media screen and (min-width:768px) {
+	.article-container img{
+		width:auto;
+		max-width:620px;
+	}
 }
 .article-inner{
 	background-color:#fff;

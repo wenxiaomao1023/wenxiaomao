@@ -109,7 +109,7 @@ def getArticle(request, pageIndex=None, categoryId=None, articleId=None):
         pindex = 0
         pmax = 0
     else:
-        showMax = 5
+        showMax = 10
         pageIndex = int(pageIndex)
         if categoryId != None:
             catId = categoryId
