@@ -4,6 +4,10 @@
 	padding: 0
 }
 
+div{
+	word-wrap:break-word;
+}
+
 body {
 	font: 12px/1.5 'Microsoft Yahei', 'Simsun';
 	color: #666666;

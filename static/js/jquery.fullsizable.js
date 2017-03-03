@@ -168,8 +168,17 @@ Options:
       var image;
       image = new Image;
       image.buffer_src = $(this).attr('href');
-      image.index = images.length;
-      images.push(image);
+      //wen add
+      if(options.imgIdxMap){
+    	  //console.log(options.imgIdxMap[image.buffer_src])
+    	  image.index = options.imgIdxMap[image.buffer_src];
+    	  images[image.index]=image;
+      }else
+      //wen end
+      {
+    	  image.index = images.length;
+          images.push(image);
+      }
       if (options.openOnClick) {
         return $(this).click(function(e) {
           e.preventDefault();
@@ -272,6 +281,9 @@ Options:
 
   $.fn.fullsizable = function(opts) {
     options = $.extend({
+      //wen add
+      imgIdxMap: null,
+      //wen end
       selector: this.selector,
       detach_id: null,
       navigation: true,

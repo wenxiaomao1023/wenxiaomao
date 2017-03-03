@@ -214,6 +214,9 @@
 	font-size: 14px;
     color: #BBB;
 }
+
+.loadmore{
+}
 </style>
 {% endblock %}
 {% block content %}
@@ -234,15 +237,18 @@
 <div class="timeline">
 <div style="position:relative;"><div class="timeline-timepoint"></div></div>
 </div>
+<div class="loadmore timeline-date"></div>
 
 <script>
+var pageIndex=0;
+
 function getRecentDate() {
 	$.ajax({
 		type : "GET",
 		async : true,
 		url : "/getRecentUpdate",
 		data : {
-			//pageIndex:0
+			pageIndex:pageIndex
 		},
 		dataType : "json",
 		success : function(data) {
@@ -266,11 +272,15 @@ function getRecentDate() {
 					style_article="timeline-article-right";
 					style_f="fr";
 				}
+				var readmoreStr="";
+				if(data["rows"][i].readmore){
+					readmoreStr='<div class="timeline-article-readmore"><a href="/article/a'+data["rows"][i].id+'">阅读全文>></a></div>'
+				}
 				html+='<div class="timeline-article-wrapper '+style_f+' '+style_article_wapper+'">'
 					+'<div class="timeline-article '+style_article+'">'
 					+'<div class="timeline-article-title"><a href="/article/a'+data["rows"][i].id+'">'+data["rows"][i].title+'</a></div>'
 					+'<div class="timeline-article-desc">'+data["rows"][i].desc+'</div>'
-					+'<div class="timeline-article-readmore"><a href="/article/a'+data["rows"][i].id+'">阅读全文>></a></div>'
+					+readmoreStr
 					+'<div class="timeline-article-datetime">'+data["rows"][i].datetime+'</div>'
 					+'</div>'
 					+'</div>';
@@ -278,12 +288,27 @@ function getRecentDate() {
 			}
 			$(".timeline").append(html);
 			$(".timeline-timepoint").css("height",$("#l_box").height());
+			if(data["loadmore"]){
+				$(".loadmore").html("向下加载更多");
+			}else{
+				$(".loadmore").html("无更多加载");
+			}
 		},
 		error : function(data) {
 			alert("getRecentDate() error");
 		}
 	});
 }
+
+$(window).scroll(function () {
+    var scrollTop = $(this).scrollTop();
+    var scrollHeight = $(document).height();
+    var windowHeight = $(this).height();
+    if (scrollTop + windowHeight == scrollHeight) {
+    	pageIndex++;
+    	getRecentDate();
+    }
+});
 
 getRecentDate();
 

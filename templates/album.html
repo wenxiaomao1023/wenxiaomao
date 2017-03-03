@@ -59,6 +59,10 @@ function setPhotoCol(){
 	$(".photo-main").append(html);	
 }
 
+
+var loadImgNum=0;
+var imgIdxMap={};
+var firstInit=true;
 function getPhoto() {
 	$.ajax({
 		type : "GET",
@@ -96,13 +100,19 @@ function getPhoto() {
 						//将图片移动到高度最小的列
 						$(divId).append($(aId));
 						divId=getMinHeightDivId(col);
+						//由于图片同宽不同高，显示顺序根据图片加载的快慢导致排列的位置是不固定的
+						//每张图片加载完成的先后顺序就是fullsizable预览时的顺序
+						imgIdxMap[$(this).attr("src")]=loadImgNum;
+						loadImgNum++;
+						$('.photo-main a').fullsizable({
+							//"detach_id": 'photo-container',
+							"imgIdxMap":imgIdxMap,
+							"firstInit": firstInit//(pageIndex==0 || pageIndex==1) ? true:false
+						});
+						firstInit=false;
 					});
 				})(i);
 			}
-			$('.photo-main a').fullsizable({
-				detach_id: 'photo-container',
-				firstInit: pageIndex==0 ? true:false
-			});
 			pageIndex++;
 		},
 		error : function(data) {
@@ -145,7 +155,7 @@ var pageIndex=0;
 var margin=4;
 var col=0;
 var divId="#photo_div_0";
-var pageShowImgNum=12;
+var pageShowImgNum={{PAGE_SHOW_IMG_NUM}};
 $(document).on('fullsizable:opened', function(){
 	$("#jquery-fullsizable").swipe({
 		swipeLeft: function(){

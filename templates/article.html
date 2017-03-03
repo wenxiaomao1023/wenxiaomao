@@ -114,8 +114,10 @@ function getArticle(){
 		if(is_article){
 			article_inner_content='<div class="article-inner-desc">'+gData["rows"][i].content+'</div>';
 		}else{
-			article_inner_content='<div class="article-inner-desc">'+gData["rows"][i].desc+'</div>'
-								+'<div class="article-inner-readmore"><a href="/article/a'+articleId+'">阅读全文>></a></div>';
+			article_inner_content='<div class="article-inner-desc">'+gData["rows"][i].desc+'</div>';
+			if(gData["rows"][i].readmore){
+				article_inner_content+='<div class="article-inner-readmore"><a href="/article/a'+articleId+'">阅读全文>></a></div>';
+			}
 			tab = "<div class=pageControl>"
 				+ "<div class='pageControlBtn' onclick='goFistPage()'>首页</div>"
 				+ "<div class='pageControlBtn' onclick='goPrePage();'>上一页</div>"

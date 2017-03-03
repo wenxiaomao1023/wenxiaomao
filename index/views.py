@@ -14,60 +14,58 @@ from gallery.models import Photo
 from wenxiaomao.settings import GALLERY_PATH
 
 
-def ret(state,msg=''):
+def ret(state, msg=''):
     if state:
-        s="SUCCESS"
+        s = 'SUCCESS'
     else:
-        s="FAILURE"
-    m=""    
-    if msg!="":    
-        m=unicode(str(msg),"utf-8")
-        m=ugettext(m)
-    return json.dumps({'state':s,'msg':m})
+        s = 'FAILURE'
+    m = ''    
+    if msg != '':    
+        m = unicode(str(msg), 'utf-8')
+        m = ugettext(m)
+    return json.dumps({'state':s, 'msg':m})
 
 def welcome(request):
-    return render(request,"welcome.html")
+    return render(request, 'welcome.html')
 
 def index(request):
-    return render(request,"index.html",{'audioplayer':True})
+    return render(request, 'index.html', {'audioplayer':True})
 
 def aboutme(request):
-    return render(request,"aboutme.html")
+    return render(request, 'aboutme.html')
 
 def login(request):
-    return render(request,"login.html")
+    return render(request, 'login.html')
 
 def getRecentUpdate(request):
-    #pageIndex=int(request.GET["pageIndex"])
-    items=Article.objects.all().order_by("-datetime")
-    total=items.count()
-#     limit=20
-#     loadmore=False
-#     if (pageIndex+1)*limit<total:
-#         loadmore=True
-    jsonword=[]
-#     for item in items[pageIndex*limit:(pageIndex+1)*limit]: 
-    for item in items: 
-        data={"id":item.id,
-              "title":item.title,
-              "desc":item.desc,
-              "datetime":item.datetime.strftime("%Y-%m-%d %H:%M"),
-              "ym":item.datetime.strftime("%Y-%m"),
-              "categoryId":item.categoryId_id,
-              "categoryName":ArticleCategory.objects.get(id=item.categoryId_id).name}
+    pageIndex=int(request.GET['pageIndex'])
+    items = Article.objects.all().order_by('-datetime')
+    total = items.count()
+    limit=10
+    jsonword = []
+    for item in items[pageIndex*limit:(pageIndex+1)*limit]: 
+#     for item in items: 
+        data = {'id':item.id,
+              'title':item.title,
+              'desc':item.desc,
+              'datetime':item.datetime.strftime('%Y-%m-%d %H:%M'),
+              'ym':item.datetime.strftime('%Y-%m'),
+              'categoryId':item.categoryId_id,
+              'categoryName':ArticleCategory.objects.get(id=item.categoryId_id).name,
+              'readmore':(item.categoryId_id != 1)}
         jsonword.append(data)
 #     return HttpResponse(json.dumps({'total':limit, 'rows':jsonword, 'loadmore':loadmore }))
-    return HttpResponse(json.dumps({'total':total, 'rows':jsonword}))
+    return HttpResponse(json.dumps({'total':total, 'rows':jsonword, 'loadmore':(pageIndex+1)*limit<total }))
 
 def userChangePassword(request):
-    if(request.method == "POST"):
+    if(request.method == 'POST'):
         password_old = request.POST['password_old']
         password_new = request.POST['password_new']
         password_new_verify = request.POST['password-v']
 #         current_pwd = request.user.password
         if not request.user.check_password(password_old):
             return HttpResponse(json.dumps({'Success': False, 'errorInfo': '输入的密码不正确!'}))
-        elif len(password_new)<6:
+        elif len(password_new) < 6:
             return HttpResponse(json.dumps({'Success': False, 'errorInfo': '新密码需要大于5位数!'}))
         elif not password_new_verify == password_new:
             return HttpResponse(json.dumps({'Success': False, 'errorInfo': '两次输入的密码不一致!'}))
@@ -100,7 +98,7 @@ def userLogin(request):
     c = {}
     c.update(csrf(request))
     logout(request)
-    return render(request,"login.html", c)
+    return render(request, 'login.html', c)
 
 def userLogout(request):
     logout(request)
