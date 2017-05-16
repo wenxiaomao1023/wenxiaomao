@@ -64,7 +64,7 @@ function insertUpload(){
 }
 
 function addArticle(){
-	var title=$("#article_title").val();
+	var title=htmlEncode($("#article_title").val());
 	var categoryId=$("#article_category option:selected").val();
 	var desc=$("#article_desc").val();
 	var content=$("#article_content").val();
