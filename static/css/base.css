@@ -103,6 +103,14 @@ a:hover {
 	
 }
 
+pre{
+	/*magin-left:2em;*/
+	border-left:3px solid #ccc;
+	padding:0 1em;
+	background-color:#f9f9f9 !important;
+	font-size:12px !important;
+}
+
 /*手机*/
 @media screen and (min-width:240px) and (max-width: 767px) {
 	.base {
