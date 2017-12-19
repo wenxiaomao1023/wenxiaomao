@@ -11,12 +11,11 @@
 <body>
 <div class="base">
 	<div><span style="font-size:20px;">Hello !</span></div>
-	<form action="/adminLogin" method="post">
+	<form action="/adminRegister" method="post">
 		{% csrf_token %}
 		<div>帐号：<input id="username" name="username" type="text"/></div>
 		<div>密码：<input id="password" name="password" type="password"/></div>
-		<input type="hidden" name="next" value="{{request.get_full_path}}" />
-		<div><button type="submit">登录</button></div>
+		<div><button type="submit">注册</button></div>
 	</form>
 </div>
 </body>

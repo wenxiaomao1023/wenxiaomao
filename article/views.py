@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 import os
 
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
@@ -20,6 +21,7 @@ def getArticleCategory(request):
         jsonword.append(data)
     return HttpResponse(json.dumps({'total':total, 'rows':jsonword}))
 
+@login_required
 def adminArticle(request, articleId=None):
     if articleId != None:
         article = Article.objects.get(id=articleId)
@@ -69,15 +71,19 @@ def uploadfile(request, prev):
             info.write(chunk)
     return HttpResponse(json.dumps({'err':'', 'msg':'%s://%s/%s%s/%s' % (request.scheme, request.get_host(), ARTICLE_PATH, dt, _file.name)}))
 
+@login_required
 def uploadlink(request):
     return uploadfile(request, 'l')
 
+@login_required
 def uploadimg(request):
     return uploadfile(request, 'i')
 
+@login_required
 def uploadflash(request):
     return uploadfile(request, 'f')
 
+@login_required
 def uploadmedia(request):
     return uploadfile(request, 'm')
 

@@ -2,28 +2,28 @@
 import json
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.views import logout
-from django.http.response import HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.views import login, logout
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
-from django.template.context_processors import csrf
 from django.utils.translation import ugettext
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect, \
+    csrf_exempt
 
 from article.models import Article, ArticleCategory
 from gallery.models import Photo
 from wenxiaomao.settings import GALLERY_PATH
 
 
-def ret(state, msg=''):
+def ret(state=True, msg='', data={}):
     if state:
-        s = 'SUCCESS'
+        s = "SUCCESS"
     else:
-        s = 'FAILURE'
-    m = ''    
-    if msg != '':    
-        m = unicode(str(msg), 'utf-8')
-        m = ugettext(m)
-    return json.dumps({'state':s, 'msg':m})
+        s = "FAILURE"
+    msg = unicode(str(msg), "utf-8")
+    m = ugettext(msg)
+    return json.dumps({'state':s, 'msg':m, 'data':data})
 
 def welcome(request):
     return render(request, 'welcome.html')
@@ -34,8 +34,24 @@ def index(request):
 def aboutme(request):
     return render(request, 'aboutme.html')
 
-def login(request):
+def login_url(request):
     return render(request, 'login.html')
+
+def register_url(request):
+    return render(request, 'register.html')
+
+def htmlEncode(str):
+    s=''
+    if len(str) == 0: 
+        return "";
+    s = str.replace('&', '&gt;')   
+    s = s.replace('<', '&lt;');   
+    s = s.replace('>', '&gt;');   
+    #s = s.replace(' ', '&nbsp;');   
+    #s = s.replace('\'', '&#39;');   
+    #s = s.replace('\"', '&quot;');   
+    s = s.replace(r'\n', '<br>');
+    return s;   
 
 def getRecentUpdate(request):
     pageIndex=int(request.GET['pageIndex'])
@@ -57,50 +73,41 @@ def getRecentUpdate(request):
 #     return HttpResponse(json.dumps({'total':limit, 'rows':jsonword, 'loadmore':loadmore }))
     return HttpResponse(json.dumps({'total':total, 'rows':jsonword, 'loadmore':(pageIndex+1)*limit<total }))
 
-def userChangePassword(request):
-    if(request.method == 'POST'):
-        password_old = request.POST['password_old']
-        password_new = request.POST['password_new']
-        password_new_verify = request.POST['password-v']
-#         current_pwd = request.user.password
-        if not request.user.check_password(password_old):
-            return HttpResponse(json.dumps({'Success': False, 'errorInfo': '输入的密码不正确!'}))
-        elif len(password_new) < 6:
-            return HttpResponse(json.dumps({'Success': False, 'errorInfo': '新密码需要大于5位数!'}))
-        elif not password_new_verify == password_new:
-            return HttpResponse(json.dumps({'Success': False, 'errorInfo': '两次输入的密码不一致!'}))
-        try:
-            request.user.set_password(password_new)
-            request.user.save()
-        except Exception, e:
-            return HttpResponse(json.dumps({'Success': False, 'errorInfo': '更新密码失败!'}))
-        else:
-            return HttpResponse(json.dumps({'Success': True}))
-    raise Http404() 
-
-@ensure_csrf_cookie
-def userLogin(request):
+@csrf_exempt
+def adminLogin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        data = {}
-        if(request.GET.__contains__('next') and request.GET['next'] != ''):
-            data.update({'next':request.GET['next']})
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirect to a success page.
-            data.update({'INCORRECT': False})
-            return HttpResponse(json.dumps(data))
+            url=request.POST['next'].split('next=')
+            if len(url)>1 and url[1]!='':
+                return HttpResponseRedirect(url[1],user)
+            else:
+                return HttpResponseRedirect("/index")
         else:
-            data.update({'INCORRECT': True})
-            return HttpResponse(json.dumps(data))
-    c = {}
-    c.update(csrf(request))
-    logout(request)
-    return render(request, 'login.html', c)
+            return HttpResponse(ret(False,'invalid username or password'))
+        
+def adminRegister(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            if User.objects.filter(username=username).count()>0:
+                return HttpResponse(ret(False,'username exist'))
+            user = User.objects.create_user(username, username, password)
+            user.save()
+            currentuser = authenticate(username=username, password=password)
+            login(request, currentuser) 
+        except Exception, e:
+            return HttpResponse(ret(False,e))
+        else:
+            return HttpResponseRedirect("/index",currentuser)
+    raise Http404()
 
-def userLogout(request):
+@login_required
+def adminLogout(request):
     logout(request)
-    return HttpResponse(json.dumps({'success':True}))
+    return HttpResponseRedirect("/index")
 

@@ -12,9 +12,7 @@
 <link rel="stylesheet" href="{% static 'css/audioplayer.css' %}">
 {% endif %}
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-<!-- <link rel="stylesheet" href="{% static 'css/phone.css' %}"> -->
 <script src="{% static 'js/jquery.min.js' %}"></script>
-<!-- <script src="{% static 'js/jquery-1.7.2.js' %}"></script> -->
 <script src="{% static 'js/base.js' %}"></script>
 <script src="{% static 'js/skin.js' %}"></script>
 {% if audioplayer %}
@@ -31,7 +29,11 @@
 				</div>
 				<div class="logo-r-title">
 					<div class="logo-r-title-t">温小猫的博客</div>
-					<div class="logo-r-title-b">分享 生活喜乐 记录 人生点滴</div>
+					<div class="logo-r-title-b">分享 生活喜乐 记录 人生点滴
+					{% if not user.is_anonymous and user %}
+					<a href="/logout"><span style="color:#f00;">注销</span></a>
+					{% endif %}
+					</div>
 				</div>
 			</div>
 			<div id="topnav" class="f_r">
@@ -93,7 +95,7 @@
 								<!-- wen51sina an一个6 -->
 								<li><a class="txwb"
 									href="http://t.qq.com/wendadapaopaotang" target="_blank">腾讯微博</a></li>
-								<li><a class="rss" href="#">RSS</a></li>
+								<li><a class="rss" href="https://github.com/wenxiaomao1023" target="_blank">GitHub</a></li>
 								<!-- portal.php?mod=rss target="_blank"-->
 								<li><a class="wx" href="mailto:wenxiaomao1023@163.com">邮箱</a></li>
 							</ul>

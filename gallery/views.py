@@ -1,12 +1,26 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
 from gallery.models import Album, Photo
 from wenxiaomao.settings import GALLERY_PATH
 
+
 PAGE_SHOW_IMG_NUM=12
+
+@login_required
+def adminGallery(request, albumId=None):
+    if albumId != None:
+        album = Album.objects.get(id=albumId)
+        jsn = {'method':'edit',
+             'articleId':albumId,
+             'name':album.name,
+             'cover':album.cover}
+    else:
+        jsn = {'method':'add'}
+    return render(request, 'admin/gallery.html', {'data':json.dumps(jsn)})
 
 def gallery(request):
     return render(request, 'gallery.html', {'is_gallery':True})

@@ -8,9 +8,9 @@
 	var showMax=5;
 	
 	function submitForm(replyId) {
-		var content = htmlEncode($("#input-content"+replyId).val().trim());
-		var username = htmlEncode($("#username"+replyId).val().trim());
-		var email = htmlEncode($("#email"+replyId).val().trim());
+		var content = $("#input-content"+replyId).val().trim();
+		var username = $("#username"+replyId).val().trim();
+		var email = $("#email"+replyId).val().trim();
 		if(username==""){
 			alert("请填写昵称");
 			return;
@@ -83,6 +83,7 @@
 				genReplyMsgList(data);
 			},
 			error : function(data) {
+				console.log(data);
 				alert("获取留言信息失败");
 			}
 		});

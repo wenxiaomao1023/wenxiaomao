@@ -5,9 +5,9 @@ import json
 from django.http.response import HttpResponse
 from django.shortcuts import render
 
-from index.views import ret
+from index.views import ret, htmlEncode
 from reply.models import Reply
-# from django.core.checks.security import csrf
+
 
 def reply(request):
     return render(request, 'reply.html')
@@ -38,9 +38,9 @@ def getReply(request):
 
 def addReply(request):
     if request.method == 'POST':
-        content = request.POST['content']
-        username = request.POST['username']
-        email = request.POST['email']
+        content = htmlEncode(request.POST['content'])
+        username = htmlEncode(request.POST['username'])
+        email = htmlEncode(request.POST['email'])
         replyId = int(request.POST['replyId'])
         date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if username == '':

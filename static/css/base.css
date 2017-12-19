@@ -109,6 +109,7 @@ pre{
 	padding:0 1em;
 	background-color:#f9f9f9 !important;
 	font-size:12px !important;
+	overflow-x: scroll;
 }
 
 /*手机*/

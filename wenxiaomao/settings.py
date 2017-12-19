@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Django settings for wenxiaomao project.
 
@@ -12,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@q25)z)5zsj)h8u4q!ktv5u9l)211l9jezyy6gv5x81u1vrldo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,7 +50,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -60,7 +62,7 @@ ROOT_URLCONF = 'wenxiaomao.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'wenxiaomao',
         'USER': 'root',
-        #'PASSWORD': '123',
+#         'PASSWORD': 'root',
         'PASSWORD': 'Hello@123',
         'HOST': '127.0.0.1',
         'PORT': '3306'
@@ -124,21 +126,24 @@ USE_L10N = True
 
 USE_TZ = False
 
-
+LOGIN_URL = '/login/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+#如果DEBUG=FALSE 则需要前缀域名地址
+STATIC_URL = 'http://115.28.139.204:9999/static/'
+# STATIC_URL = '/static/'
 
+#部署apache这个可以删除 本地调试时不可以删除
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+#python manage.py collectstatic 命令指定的路径
+#STATIC_ROOT
 
-#MEDIA_ROOT="D:/wenxiaomao/"
-MEDIA_ROOT="/root/wen/wenxiaomao/"
+MEDIA_ROOT = '%s/' % (BASE_DIR)
 
-ARTICLE_PATH="static/article/"
+ARTICLE_PATH = 'static/article/'
 
-GALLERY_PATH="static/gallery/"
-
+GALLERY_PATH = 'static/gallery/'

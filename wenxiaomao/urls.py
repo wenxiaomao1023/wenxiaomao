@@ -20,8 +20,9 @@ from article.views import getArticleCategory, adminArticle, \
     uploadlink, uploadimg, uploadflash, \
     uploadmedia, uploadarticle, articleById, articleByCategoryId
 from gallery.views import gallery, getAlbumById, \
-     album, getAlbums, getPhotos
-from index.views import welcome, index, login, aboutme, getRecentUpdate
+     album, getAlbums, getPhotos, adminGallery
+from index.views import welcome, index, login, aboutme, getRecentUpdate, \
+    adminLogin, adminRegister, adminLogout, login_url, register_url
 from reply.views import reply, getReply, addReply
 
 
@@ -47,6 +48,8 @@ urlpatterns = [
     url(r'^getArticleCategory', getArticleCategory),
     ##############################################################################
     #相册
+    url(r'^admin/gallery/?$', adminGallery),
+    url(r'^admin/gallery/a(?P<albumId>\d+)/?$', adminGallery),
     url(r'^gallery/(?P<albumId>\d+)/?$', album),
     url(r'^gallery/?', gallery),
     url(r'^getAlbums/(?P<albumId>\d+)/?$', getAlbumById),
@@ -62,7 +65,11 @@ urlpatterns = [
     url(r'^addReply', addReply),
     ##############################################################################
     #url(r'^admin/', admin.site.urls),
-    #url(r'^login/?$', login), 
+    url(r'^login/?$', login_url),
+    #url(r'^register/?$', register_url),
+    url(r'^adminLogin', adminLogin),
+    url(r'^adminRegister', adminRegister),
+    url(r'^logout', adminLogout),
     url(r'^welcome/?$', welcome),
     url(r'^', index),
 ]
